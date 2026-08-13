@@ -5,8 +5,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using Microsoft.AspNetCore.Cors;
 
-using PersonalSite.Services.Test;
-using PersonalSite.DAC.Test;
+using PersonalSite.Services;
+using PersonalSite.DAC.Profile;
 
 using NLog;
 using NLog.Web;
@@ -43,14 +43,14 @@ try
 
     builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
-        var serviceAssembly = typeof(ITestService).Assembly;
+        var serviceAssembly = typeof(IProfileService).Assembly;
         containerBuilder
             .RegisterAssemblyTypes(serviceAssembly)
             .Where(t => t.IsClass && !t.IsAbstract && t.Namespace != null && t.Namespace.StartsWith("PersonalSite.Services") && t.Name.EndsWith("Service"))
             .AsImplementedInterfaces()
             .InstancePerLifetimeScope();
 
-        var dacAssembly = typeof(ITestDac).Assembly;
+        var dacAssembly = typeof(IProfileDac).Assembly;
         containerBuilder
             .RegisterAssemblyTypes(dacAssembly)
             .Where(t => t.IsClass && !t.IsAbstract && t.Namespace != null && t.Namespace.StartsWith("PersonalSite.DAC") && t.Name.EndsWith("Dac"))
@@ -69,7 +69,19 @@ try
     builder.Services.AddScoped<IDbConnection>(sp =>
     {
         var cs = connectionString ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        return new SqlConnection(cs);
+        var connectionBuilder = new SqlConnectionStringBuilder(cs);
+
+        // Microsoft.Data.SqlClient 6 enables encryption by default. Some local
+        // SQL Server Express instances do not support that TLS configuration,
+        // so development falls back to optional encryption unless the
+        // connection string explicitly chooses an Encrypt value.
+        if (sp.GetRequiredService<IHostEnvironment>().IsDevelopment()
+            && !connectionBuilder.ShouldSerialize("Encrypt"))
+        {
+            connectionBuilder.Encrypt = false;
+        }
+
+        return new SqlConnection(connectionBuilder.ConnectionString);
     });
 
     var app = builder.Build();
