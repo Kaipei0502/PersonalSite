@@ -9,9 +9,9 @@ export default defineConfig({
     proxy: {
       // 前端呼叫 /api/xxx 會自動轉發到後端
       "/api": {
-        target: "https://localhost:44366",
+        target: "http://localhost:5250",
         changeOrigin: true,
-        secure: false, // 後端是 https localhost 通常要 false
+        secure: false,
       },
     },
   },
