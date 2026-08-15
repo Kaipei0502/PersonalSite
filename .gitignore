@@ -1,0 +1,41 @@
+# =========================
+# .NET / Visual Studio
+# =========================
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+.vs/
+
+# Rider / VSCode
+.idea/
+.vscode/
+.agents/
+
+# =========================
+# Node / React
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# build outputs
+build/
+dist/
+.vite/
+
+# env files
+.env*
+!.env.example
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db

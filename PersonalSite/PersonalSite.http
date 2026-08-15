@@ -1,0 +1,14 @@
+@PersonalSite_HostAddress = http://localhost:5250
+
+GET {{PersonalSite_HostAddress}}/api/Profile
+Accept: application/json
+
+###
+
+GET {{PersonalSite_HostAddress}}/api/Projects
+Accept: application/json
+
+###
+
+GET {{PersonalSite_HostAddress}}/api/Projects/featured
+Accept: application/json
