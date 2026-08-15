@@ -5,11 +5,13 @@ import HomePage from "../pages/Home/HomePage";
 import ExperiencePage from "../pages/Experience/ExperiencePage";
 import ProjectsPage from "../pages/Projects/ProjectsPage";
 import AboutPage from "../pages/About/AboutPage";
+import RouteErrorPage from "../pages/RouteErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <RouteErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       { path: "experience", element: <ExperiencePage /> },

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseURL =
   import.meta.env.VITE_API_BASE_URL?.trim() ||
-  ""; // 讓你可以用 proxy 時走相對路徑
+  "/api";
 
 export const http = axios.create({
   baseURL,
